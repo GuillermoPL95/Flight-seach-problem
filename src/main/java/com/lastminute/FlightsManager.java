@@ -17,9 +17,9 @@ public class FlightsManager {
 
 
     /*Method to get the flights information */
-    public LinkedHashMap<String, Double> getFlightsInfo(String origin, String destination, int date, int passengers){
+    public LinkedHashMap<String, Float> getFlightsInfo(String origin, String destination, int date, int passengers){
 
-        LinkedHashMap<String, Double> results = new LinkedHashMap<String, Double>();
+        LinkedHashMap<String, Float> results = new LinkedHashMap<>();
 
         // Get list of available flights
         List<String> codes = getFlightCodes(origin, destination, factory.getRoutes());
@@ -28,7 +28,7 @@ public class FlightsManager {
             for(String code : codes){
                 int basePrice = factory.getPrice(code);
                 Double finalPrice = getFinalPrice(basePrice, date, passengers);
-                results.put(code, finalPrice);
+                results.put(code, finalPrice.floatValue());
             }
         }
         return results;
@@ -36,7 +36,7 @@ public class FlightsManager {
 
 
     //Method to print the results
-    public void printResults(int passengers, int date, String origin, String destination, LinkedHashMap<String, Double> results){
+    public void printResults(int passengers, int date, String origin, String destination, LinkedHashMap<String, Float> results){
 
         if(passengers > 1){
             System.out.println(String.format("%d passengers, %d days to departure date, flying %s -> %s", passengers, date, origin, destination));
@@ -53,7 +53,7 @@ public class FlightsManager {
             System.out.println("flights:\n");
             for(String code : results.keySet()){
 
-                float finalValue = results.get(code).floatValue();
+                float finalValue = results.get(code);
 
                 if(passengers > 1){
 
@@ -75,12 +75,10 @@ public class FlightsManager {
     /*Method to filter the available flights and get the flight codes*/
     private List<String> getFlightCodes(String origin, String destination, List<List<String>> routes){
 
-        List<String> codes = routes.stream()
+        return routes.stream()
                 .filter(line -> line.get(0).equals(origin) && line.get(1).equals(destination))
                 .map(line -> line.get(2))
                 .collect(Collectors.toList());
-
-        return codes;
     }
 
 
@@ -105,7 +103,7 @@ public class FlightsManager {
     }
 
 
-    /*Method to obtain base price and percentaje*/
+    /*Method to obtain base price and percentage*/
     private int[] getBasePriceAndPercentage(double finalPrice, int passengers, int date){
 
         double percentage;
@@ -131,5 +129,4 @@ public class FlightsManager {
 
         return result;
     }
-
 }

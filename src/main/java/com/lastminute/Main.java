@@ -16,7 +16,8 @@ public class Main {
         int date;
         String origin;
         String destination;
-        LinkedHashMap<String, Double> results;
+        LinkedHashMap<String, Float> results;
+
 
         // 1st example: 1 passenger, 31 days to the departure date, flying AMS -> FRA
 
@@ -56,11 +57,7 @@ public class Main {
         destination = "FRA";
         results = manager.getFlightsInfo(origin, destination, date, passengers);
         manager.printResults(passengers,date,origin,destination,results);
-
-
     }
-
-
 }
 
 
